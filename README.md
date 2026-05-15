@@ -54,6 +54,51 @@ Output is saved as a CSV in the current directory, e.g.:
 
 ---
 
+### `get-group-nesting-audit.ps1`
+
+Displays the full nesting tree of one or more AD groups — showing every nested group and user, the path through which they have access, and the nesting depth. Produces both a colour-coded console tree view and a timestamped CSV export.
+
+**Features**
+- Interactive console tree with colour-coded users (white = enabled, dark red = disabled) and circular-reference detection
+- Flattens the tree into CSV rows with a full access path per user/group (e.g. `Domain Admins > HelpDesk > jdoe`)
+- Accepts a plain-text file of group names to audit multiple groups in one run
+- Summary on completion: nested group count, total/disabled users, and max nesting depth
+
+**Usage**
+
+```powershell
+# Interactive mode (prompts for group name)
+.\get-group-nesting-audit.ps1
+
+# Single group
+.\get-group-nesting-audit.ps1 -GroupName "Domain Admins"
+
+# Multiple groups from a text file (one group name per line)
+.\get-group-nesting-audit.ps1 -GroupListFile "C:\temp\groups.txt"
+
+# Specify a custom output path for the CSV
+.\get-group-nesting-audit.ps1 -GroupName "Domain Admins" -OutputPath "C:\reports\audit.csv"
+```
+
+**Output columns**
+
+| Column | Description |
+|---|---|
+| `TopLevelGroup` | The group name passed in as the starting point |
+| `Type` | `User` or `Group` |
+| `Name` | SamAccountName (users) or group name (groups) |
+| `DisplayName` | Display name of the user (blank for groups) |
+| `Enabled` | `True` / `False` for users (blank for groups) |
+| `AccessPath` | Full path showing how access is inherited, e.g. `Domain Admins > HelpDesk > jdoe` |
+| `NestingDepth` | How many levels deep this entry sits |
+| `Description` | Group description from AD (blank for users) |
+
+Output is saved as a CSV in the current directory, e.g.:
+- `GroupNestingAudit_Domain_Admins_20250515_143022.csv`
+- `GroupNestingAudit_MultiGroup_20250515_143022.csv`
+
+---
+
 ## 🤝 Contributing
 
 Issues and pull requests are welcome. When adding a new script, please:
