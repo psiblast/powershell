@@ -107,6 +107,46 @@ Output is saved as a CSV in the current directory, e.g.:
 
 ---
 
+### `compare-aduser-group-memberships.ps1`
+
+Compares group memberships across all members of an AD group, identifying which memberships are common to everyone (the baseline) and which are unique to individual users (the outliers worth investigating). Useful for spotting privilege creep or misconfigured accounts within a peer group.
+
+**Features**
+- Resolves full recursive group memberships for every user in the target group
+- Classifies each membership as `Common` (shared by all) or `Unique to this user`
+- Console summary ranked by unique membership count — largest outliers flagged in red
+- Colour-coded output: grey (0 unique), white (1–10), yellow (11–30), red (31+, flagged for investigation)
+
+**Usage**
+
+```powershell
+# Interactive mode (prompts for group name)
+.\compare-aduser-group-memberships.ps1
+
+# With a group name
+.\compare-aduser-group-memberships.ps1 -GroupName "Helpdesk"
+
+# With a custom output path
+.\compare-aduser-group-memberships.ps1 -GroupName "Helpdesk" -OutputPath "C:\Audit\helpdesk.csv"
+```
+
+**Output columns**
+
+| Column | Description |
+|---|---|
+| `Username` | SamAccountName of the user |
+| `DisplayName` | Display name of the user |
+| `Status` | `Common` (all users share this) or `Unique to this user` |
+| `GroupName` | Name of the AD group |
+| `MembershipType` | `Direct` or `Nested` |
+| `InheritedFrom` | The group that granted nested membership |
+| `Description` | Group description from AD |
+
+Output is saved as a CSV in the current directory, e.g.:
+- `PeerComparison_Helpdesk_20250515_143022.csv`
+
+---
+
 ## 🤝 Contributing
 
 Issues and pull requests are welcome. When adding a new script, please:
