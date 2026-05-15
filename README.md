@@ -15,6 +15,13 @@ A collection of utility PowerShell scripts for Active Directory administration a
 
 ## 📁 Scripts
 
+| Script | Description |
+|---|---|
+| [`get-nested-groups-of-user-or-group.ps1`](#get-nested-groups-of-user-or-groupps1) | Export all group memberships (direct & nested) for a user or group |
+| [`get-group-nesting-audit.ps1`](#get-group-nesting-auditps1) | Audit the full nesting tree of one or more AD groups |
+
+---
+
 ### `get-nested-groups-of-user-or-group.ps1`
 
 Exports all group memberships — including nested/recursive groups — for a given AD user, or for all users within a given AD group. Results are written to a timestamped CSV file.
